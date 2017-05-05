@@ -105,3 +105,14 @@ h1,h2,h3,h4,h5,h6 {
     margin: 0;
     white-space: nowrap;
 }
+.user-info__stat-img {
+  vertical-align: middle;
+}
+.follower__stat-img {
+  border-radius: 50%;
+  width: 45px;
+}
+.follower__stat-login {
+  display: inline;
+  font-size: 18px;
+}

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+var TOKEN = '7c888b8a3d5b73498b72385e9bd364044e58d563'
 
 class User extends React.Component {
     constructor() {
@@ -19,18 +20,27 @@ class User extends React.Component {
     the data -- in the callback -- we call `setState` to put the user data in our state. This will trigger a re-render.
     When `render` gets called again, `this.state.user` exists and we get the user info display instead of "LOADING..."
     */
+    fetchData = () => {
+      fetch(`https://api.github.com/users/${this.props.params.username}?access_token=${TOKEN}`)
+      .then(response => response.json())
+      .then(
+          user => {
+              // How can we use `this` inside a callback without binding it??
+              // Make sure you understand this fundamental difference with arrow functions!!!
+              this.setState({
+                  user: user
+              });
+          }
+      );
+    }
+    componentDidUpdate(abcd) {
+        if (abcd.username !== this.props.params.username){
+            this.fetchData()
+        }
+    }
+
     componentDidMount() {
-        fetch(`https://api.github.com/users/${this.props.params.username}`)
-        .then(response => response.json())
-        .then(
-            user => {
-                // How can we use `this` inside a callback without binding it??
-                // Make sure you understand this fundamental difference with arrow functions!!!
-                this.setState({
-                    user: user
-                });
-            }
-        );
+      this.fetchData()
     }
 
     /*
@@ -89,6 +99,7 @@ class User extends React.Component {
                         {stats.map(this.renderStat)}
                     </ul>
                 </div>
+                {this.props.children}
             </div>
         );
     }
